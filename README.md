@@ -1,2 +1,2 @@
 # AWS-serverless-demo
-Demo for NYP Serverless event
+Demo for NYP Cloud (AWS) Serverless event
