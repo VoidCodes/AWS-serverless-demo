@@ -84,6 +84,12 @@ def save_user(request_body):
         return build_response(400, e.response['Error']['Message'])
 
 def modify_user(user_id, update_key, update_value):
+    # Check if user exists
+    existing_user_response = dynamodb_table.get_item(Key={'userid': user_id})
+
+    if 'Item' not in existing_user_response:
+        return build_response(404, f'User with userid {user_id} not found')
+
     try:
         response = dynamodb_table.update_item(
             Key={'userid': user_id},
