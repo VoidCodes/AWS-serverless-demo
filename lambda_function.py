@@ -77,6 +77,10 @@ def scan_dynamo_records(scan_params, item_array):
         return {'users': item_array}
 
 def save_user(request_body):
+    # Check if user already exists
+    existing_user_response = dynamodb_table.get_item(Key={'userid': request_body['userid']})
+    if 'Item' in existing_user_response:
+        return build_response(409, f'User with userid {request_body["userid"]} already exists')
     try:
         dynamodb_table.put_item(Item=request_body)
         body = {
