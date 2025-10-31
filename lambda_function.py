@@ -89,6 +89,11 @@ def modify_user(user_id, update_key, update_value):
 
     if 'Item' not in existing_user_response:
         return build_response(404, f'User with userid {user_id} not found')
+    
+    # Check if update_key exists in the user item
+    existing_user = existing_user_response['Item']
+    if update_key not in existing_user:
+        return build_response(400, f'Attribute {update_key} does not exist for user {user_id}')
 
     try:
         response = dynamodb_table.update_item(
